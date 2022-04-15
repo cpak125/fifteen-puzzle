@@ -4,16 +4,13 @@ let originalTiles = ["one", "two", "three", "four",
     "five", "six", "seven", "eight",
     "nine", "ten", "eleven", "twelve",
     "thirteen", "fourteen", "fifteen", "sixteen"];
-
 let shuffledTiles = originalTiles.slice();
-
 let numericMap = {
     "one": 1, "two": 2, "three": 3, "four": 4,
     "five": 5, "six": 6, "seven": 7, "eight": 8,
     "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
     "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
 };
-
 // move directions: [[top, right, bottom, left]]
 let validMoveDirs = [
     [0, 1, 1, 0], [0, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1],
@@ -21,6 +18,9 @@ let validMoveDirs = [
     [1, 1, 1, 0], [1, 1, 1, 1], [1, 1, 1, 1], [1, 0, 1, 1],
     [1, 1, 0, 0], [1, 1, 0, 1], [1, 1, 0, 1], [1, 0, 0, 1]
 ];
+let totalMoves = 0;
+let seconds = 0;
+let Interval;
 
 document.getElementById("background").addEventListener("change", changeBg);
 
@@ -36,12 +36,61 @@ function initPuzzle() {
 }
 
 
+function shuffle() {
+    shuffledTiles = originalTiles.slice();
+    let music = document.getElementById("music");
+
+    for (let i = 0; i < 1000; i++) {
+        let neighbors = [];
+        let movableTile;
+        let emptyTile = shuffledTiles.indexOf("sixteen");
+
+        //  for each neighbor n that is directly up, down, left, right from empty square:
+        //  if n exists and is movable:
+        //  neighbors.push(n)
+        if (validMoveDirs[emptyTile][0] == 1) {
+            movableTile = emptyTile - 4;
+            neighbors.push(movableTile);
+        }
+
+        if (validMoveDirs[emptyTile][1] == 1) {
+            movableTile = emptyTile + 1;
+            neighbors.push(movableTile);
+        }
+
+        if (validMoveDirs[emptyTile][2] == 1) {
+            movableTile = emptyTile + 4;
+            neighbors.push(movableTile);
+        }
+
+        if (validMoveDirs[emptyTile][3] == 1) {
+            movableTile = emptyTile - 1;
+            neighbors.push(movableTile);
+        }
+
+        //  randomly choose an element i from neighbors
+        let randIdx = Math.floor(Math.random() * neighbors.length);
+        let randTile = neighbors[randIdx];
+
+        //  move neighbors[i] to the location of the empty square
+
+        let temp = shuffledTiles[emptyTile];
+        shuffledTiles[emptyTile] = shuffledTiles[randTile];
+        shuffledTiles[randTile] = temp;
+    }
+
+    reset();
+    generatePuzzle();
+    music.play();
+    setTimeout(function () {
+        Interval = setInterval(startTimer, 1000);
+    }, 500)
+}
+
 function generatePuzzle() {
     let puzzleDiv = document.getElementById("puzzle");
     puzzleDiv.innerHTML = "";
     let bg = document.getElementById("background").value;
-    console.log(bg);
-
 
     for (let i = 0; i < shuffledTiles.length; i++) {
 
@@ -109,58 +158,18 @@ function swapTiles(movableTile, emptyTile, transition) {
         let temp = shuffledTiles[emptyTile];
         shuffledTiles[emptyTile] = shuffledTiles[movableTile];
         shuffledTiles[movableTile] = temp;
+
         generatePuzzle();
-    }, 1100)
-
-}
-
-function shuffle() {
-    for (let i = 0; i < 1000; i++) {
-        let neighbors = [];
-        let movableTile;
-        let emptyTile = shuffledTiles.indexOf("sixteen");
-
-        //  for each neighbor n that is directly up, down, left, right from empty square:
-        //  if n exists and is movable:
-        //  neighbors.push(n)
-        if (validMoveDirs[emptyTile][0] == 1) {
-            movableTile = emptyTile - 4;
-            neighbors.push(movableTile);
-        }
-
-        if (validMoveDirs[emptyTile][1] == 1) {
-            movableTile = emptyTile + 1;
-            neighbors.push(movableTile);
-        }
-
-        if (validMoveDirs[emptyTile][2] == 1) {
-            movableTile = emptyTile + 4;
-            neighbors.push(movableTile);
-        }
-
-        if (validMoveDirs[emptyTile][3] == 1) {
-            movableTile = emptyTile - 1;
-            neighbors.push(movableTile);
-        }
-
-        //  randomly choose an element i from neighbors
-        let randIdx = Math.floor(Math.random() * neighbors.length);
-        let randTile = neighbors[randIdx];
-
-        //  move neighbors[i] to the location of the empty square
-
-        let temp = shuffledTiles[emptyTile];
-        shuffledTiles[emptyTile] = shuffledTiles[randTile];
-        shuffledTiles[randTile] = temp;
-    }
-
-    generatePuzzle();
+        updateMoves();
+        checkSolved();
+    }, 900)
 }
 
 function changeBg() {
     let bg = document.getElementById("background").value;
     let puzzleDiv = document.getElementById("puzzle")
     puzzleDiv.innerHTML = "";
+    reset();
 
     for (let i = 0; i < originalTiles.length; i++) {
         if (originalTiles[i] == "sixteen") {
@@ -171,4 +180,53 @@ function changeBg() {
                                     </div>`
         }
     }
+}
+
+function startTimer() {
+    let secsHTML = document.getElementById("seconds");
+    secsHTML.innerHTML = "";
+    seconds++;
+    secsHTML.innerHTML = seconds;
+}
+
+function updateMoves() {
+    totalMoves++
+    let movesHTML = document.getElementById("moves");
+    movesHTML.innerHTML = totalMoves;
+}
+
+function checkSolved() {
+    if (shuffledTiles.toString() == originalTiles.toString()) {
+        clearInterval(Interval);
+        let endTime = document.getElementById("seconds").innerHTML;
+        let message = document.getElementById("message");
+        let close = document.getElementById("close");
+        let audio = document.getElementById("music");
+
+        audio.pause();
+        message.innerHTML = `You solved the puzzle in ${ endTime } seconds with ${ totalMoves } moves.`
+        modal.style.display = "block";
+
+        close.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        reset();
+    }
+}
+
+function reset() {
+    let music = document.getElementById("music");
+    let moves = document.getElementById("moves");
+    let secs = document.getElementById('seconds');
+    music.pause();
+    clearInterval(Interval);
+    seconds = 0;
+    secs.innerHTML = 0;
+    moves.innerHTML = 0;
 }

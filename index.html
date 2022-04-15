@@ -12,6 +12,11 @@
 <!-- <body onload="initPuzzle()"> -->
 
 <body onload="initPuzzle()">
+
+    <audio id="music" loop="true">
+        <source src="adrenaline.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="flex-container">
         <h1>Fifteen Puzzle</h1>
 
@@ -20,6 +25,7 @@
             moves that slide
             squares into the empty space. How quickly can you solve it?
         </p>
+
         <div id="select">
             <label for="background">Select a background:</label>
             <select name="background" id="background">
@@ -28,6 +34,21 @@
                 <option value="steph" id="steph">Steph</option>
                 <option value="kd" id="kd">KD</option>
             </select>
+        </div>
+
+        <div id="game-info">
+            <p>Seconds elapsed:<span id="seconds"></span> Total moves:<span id="moves">0</span></p>
+        </div>
+
+        <div id="modal">
+
+            <!-- Modal content -->
+            <div id="modal-content">
+                <span id="close">&times;</span>
+                <img src="images/congrats.gif" alt="congrats">
+                <p id="message"></p>
+            </div>
+
         </div>
 
         <div id="puzzle">
@@ -65,8 +86,8 @@
     </div>
 
     <p id="w3c">
-        <a href="#"><img src="images/w3c-xhtml.png" alt="w3c-xhtml"></a>
-        <a href="#"><img src="images/w3c-css.png" alt="w3c-css"></a>
+        <a href="#"><img class="w3c" src="images/w3c-xhtml.png" alt="w3c-xhtml"></a>
+        <a href="#"><img class="w3c" src="images/w3c-css.png" alt="w3c-css"></a>
     </p>
 
 
