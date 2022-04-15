@@ -1,0 +1,194 @@
+body {
+    width: 60vw;
+    margin: auto;
+    font-family: sans-serif;
+    background-color: #82A3A1;
+    color: white;
+}
+
+#flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#puzzle {
+    width: 400px;
+    height: 400px;
+    position: relative;
+}
+
+.tile {
+    border: 2px black solid;
+    width: 96px;
+    height: 96px;
+    font-size: 32px;
+    font-family: sans-serif;
+    text-align: center;
+    line-height: 100px;
+    vertical-align: middle;
+    float: left;
+    color: #EE6C4D;
+}
+
+.kobe {
+    background: url("images/kobe.jpg");
+}
+
+.lebron {
+    background: url("images/lebron.jpg");
+}
+
+.steph {
+    background: url("images/steph.jpg");
+}
+
+.kd {
+    background: url("images/kd.jpg");
+
+}
+
+.movable-piece {
+    transition: transform 0.8s ease;
+}
+
+.movable-piece:hover {
+    border: 2px red solid;
+    text-decoration: underline;
+    text-decoration-color: #006600;
+    color: red;
+    cursor: pointer;
+}
+
+.transition-down {
+    transform: translate(0px, 100px);
+
+}
+
+.transition-left {
+    transform: translate(-100px, 0px);
+}
+
+.transition-up {
+    transform: translate(0px, -100px);
+}
+
+.transition-right {
+    transform: translate(100px, 0px);
+}
+
+#one {
+    background-position: 0px 0px;
+}
+
+#two {
+    background-position: -100px 0px;
+}
+
+#three {
+    background-position: -200px 0px;
+}
+
+#four {
+    background-position: -300px 0px;
+}
+
+#five {
+    background-position: 0px -100px;
+}
+
+#six {
+    background-position: -100px -100px;
+    top: 100px;
+}
+
+#seven {
+    background-position: -200px -100px;
+}
+
+#eight {
+    background-position: -300px -100px;
+}
+
+#nine {
+    background-position: 0px -200px;
+}
+
+#ten {
+    background-position: -100px -200px;
+}
+
+#eleven {
+    background-position: -200px -200px;
+}
+
+#twelve {
+    background-position: -300px -200px;
+}
+
+#thirteen {
+    background-position: 0px -300px;
+}
+
+#fourteen {
+    background-position: -100px -300px;
+}
+
+#fifteen {
+    background-position: -200px -300px;
+}
+
+#sixteen {
+    border: 2px solid #82A3A1;
+    background: none;
+}
+
+#shuffle-container {
+    margin-top: 20px;
+}
+
+#shuffle-btn {
+    background-color: #094074;
+    padding: 12px 28px;
+    border-radius: 4px;
+    border: none;
+    transition-duration: 0.4s;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    color: white;
+    text-align: center;
+    font-size: large;
+}
+
+#shuffle-btn:hover {
+    background-color: #82A3A1;
+    border: 2px solid #094074;
+    color: black;
+}
+
+p {
+    font-size: 20px;
+}
+
+img {
+    height: 40px;
+    float: right !important;
+    margin-top: 20px;
+}
+
+#background {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 40%;
+    font-size: large;
+    background-color: #094074;
+    color: white;
+}
+
+#select {
+    white-space: nowrap;
+    font-size: larger;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #094074;
+}

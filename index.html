@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fifteen Puzzle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<!-- <body onload="initPuzzle()"> -->
+
+<body onload="initPuzzle()">
+    <div id="flex-container">
+        <h1>Fifteen Puzzle</h1>
+
+        <p>
+            The goal of the fifteen puzzle is to un-jumble its fifteen squares by repeatedly making
+            moves that slide
+            squares into the empty space. How quickly can you solve it?
+        </p>
+        <div id="select">
+            <label for="background">Select a background:</label>
+            <select name="background" id="background">
+                <option value="kobe" id="kobe">Kobe</option>
+                <option value="lebron" id="lebron">Lebron</option>
+                <option value="steph" id="steph">Steph</option>
+                <option value="kd" id="kd">KD</option>
+            </select>
+        </div>
+
+        <div id="puzzle">
+            <div id="one" class="tile">1</div>
+            <div id="two" class="tile">2</div>
+            <div id="three" class="tile">3</div>
+            <div id="four" class="tile">4</div>
+            <div id="five" class="tile">5</div>
+            <div id="six" class="tile">6</div>
+            <div id="seven" class="tile">7</div>
+            <div id="eight" class="tile">8</div>
+            <div id="nine" class="tile">9</div>
+            <div id="ten" class="tile">10</div>
+            <div id="eleven" class="tile">11</div>
+            <div id="twelve" class="tile">12</div>
+            <div id="thirteen" class="tile">13</div>
+            <div id="fourteen" class="tile">14</div>
+            <div id="fifteen" class="tile">15</div>
+            <div id="sixteen" class="tile"></div>
+        </div>
+
+        <div id="shuffle-container">
+            <button id="shuffle-btn" onclick="shuffle()">SHUFFLE</button>
+        </div>
+
+        <p>
+            American puzzle author and mathematician Sam Loyd is often falsely credited with
+            creating
+            the puzzle; indeed,
+            Loyd claimed from 1891 until his death in 1911 that he invented it. The puzzle was
+            actually
+            created around 1874
+            by Noyes Palmer Chapman, a postmaster in Canastota, New york.
+        </p>
+    </div>
+
+    <p id="w3c">
+        <a href="#"><img src="images/w3c-xhtml.png" alt="w3c-xhtml"></a>
+        <a href="#"><img src="images/w3c-css.png" alt="w3c-css"></a>
+    </p>
+
+
+
+    <script src="fifteen.js"></script>
+</body>
+
+</html>
