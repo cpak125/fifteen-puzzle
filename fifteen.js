@@ -1,31 +1,38 @@
 "use strict";
 
+// tiles by it's id in the correct order
 let originalTiles = ["one", "two", "three", "four",
     "five", "six", "seven", "eight",
     "nine", "ten", "eleven", "twelve",
     "thirteen", "fourteen", "fifteen", "sixteen"];
-let shuffledTiles = originalTiles.slice();
+
+// numeric value of tile according to its id 
 let numericMap = {
     "one": 1, "two": 2, "three": 3, "four": 4,
     "five": 5, "six": 6, "seven": 7, "eight": 8,
     "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
     "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
 };
-// move directions: [[top, right, bottom, left]]
+
+/* valid directions a div/tile can move from each position/index: [ [up, right, down, left] ]
+value of 1 indicates valid direction. */
 let validMoveDirs = [
     [0, 1, 1, 0], [0, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1],
     [1, 1, 1, 0], [1, 1, 1, 1], [1, 1, 1, 1], [1, 0, 1, 1],
     [1, 1, 1, 0], [1, 1, 1, 1], [1, 1, 1, 1], [1, 0, 1, 1],
     [1, 1, 0, 0], [1, 1, 0, 1], [1, 1, 0, 1], [1, 0, 0, 1]
 ];
-let totalMoves = 0;
+
+let shuffledTiles = originalTiles.slice(); // copy of orginal tiles/divs to use for shuffling
+let totalMoves = 0; // to track current number of moves
+let Interval;// to track seconds elapsed
 let seconds = 0;
-let Interval;
 
-document.getElementById("background").addEventListener("change", changeBg);
-
+/**
+ * Displays random background image onto  puzzle pieces when page initially loads.
+ */
 function initPuzzle() {
-    let bgs = ["kobe", "lebron", "steph", "kd"];
+    let bgs = ["kobe", "lebron", "steph", "kd"]; // ids of background images
 
     let randBg = bgs[Math.floor(Math.random() * bgs.length)];
     document.getElementById(randBg).selected = true;
@@ -35,45 +42,48 @@ function initPuzzle() {
     }
 }
 
-
+/**
+ * randomly rearrange the tiles of the puzzle by repeatedly choosing a random neighbor
+ * of the empty tile and swapping it with the empty tile’s space, 1000 times.
+ */
 function shuffle() {
     shuffledTiles = originalTiles.slice();
     let music = document.getElementById("music");
 
     for (let i = 0; i < 1000; i++) {
-        let neighbors = [];
+        let neighbors = []; // store neighbors of empty tile
         let movableTile;
         let emptyTile = shuffledTiles.indexOf("sixteen");
 
-        //  for each neighbor n that is directly up, down, left, right from empty square:
-        //  if n exists and is movable:
-        //  neighbors.push(n)
+        // if empty tile can move left
         if (validMoveDirs[emptyTile][0] == 1) {
-            movableTile = emptyTile - 4;
+            movableTile = emptyTile - 4; // index of tile that's above empty one
             neighbors.push(movableTile);
         }
 
+        // if empty tile can move left
         if (validMoveDirs[emptyTile][1] == 1) {
-            movableTile = emptyTile + 1;
+            movableTile = emptyTile + 1; // index tile that's right of empty one
             neighbors.push(movableTile);
         }
 
+        // if empty tile can move left
         if (validMoveDirs[emptyTile][2] == 1) {
-            movableTile = emptyTile + 4;
+            movableTile = emptyTile + 4; // index of tile that's below the empty one
             neighbors.push(movableTile);
         }
 
+        // if empty tile can move left
         if (validMoveDirs[emptyTile][3] == 1) {
-            movableTile = emptyTile - 1;
+            movableTile = emptyTile - 1; // index of tile that's left of empty one
             neighbors.push(movableTile);
         }
 
-        //  randomly choose an element i from neighbors
+        // randomly choose an element from neighbors[]
         let randIdx = Math.floor(Math.random() * neighbors.length);
         let randTile = neighbors[randIdx];
 
-        //  move neighbors[i] to the location of the empty square
-
+        // update shuffledTiles after swaping neighbors[i] with empty tile
         let temp = shuffledTiles[emptyTile];
         shuffledTiles[emptyTile] = shuffledTiles[randTile];
         shuffledTiles[randTile] = temp;
@@ -82,44 +92,52 @@ function shuffle() {
     reset();
     generatePuzzle();
     music.play();
-    setTimeout(function () {
-        Interval = setInterval(startTimer, 1000);
-    }, 500)
+    Interval = setInterval(startTimer, 1000);
 }
 
+/**
+ * Iterates through the current state of the shuffledTiles 
+ * and displays the tiles accordingly. Also distinguishes which
+ * tiles can be swapped with empty tile.
+ */
 function generatePuzzle() {
     let puzzleDiv = document.getElementById("puzzle");
     puzzleDiv.innerHTML = "";
     let bg = document.getElementById("background").value;
+    let emptyTile = shuffledTiles.indexOf("sixteen");
 
     for (let i = 0; i < shuffledTiles.length; i++) {
 
+        // if current tile is the empty one add tile with empty properties
         if (shuffledTiles[i] == "sixteen") {
             puzzleDiv.innerHTML += "<div id='sixteen' class='tile'></div>"
-        } else {
+        }
+
+        // else add tile with its id, background, and numeric value
+        else {
             puzzleDiv.innerHTML += `<div id='${ shuffledTiles[i] }' class='tile ${ bg }'>
                                         ${ numericMap[shuffledTiles[i]] }
                                     </div>`
         }
     }
 
-    let emptyTile = shuffledTiles.indexOf("sixteen");
-
-    // empty tile can swap with top
+    // if empty tile can move up
     if (validMoveDirs[emptyTile][0] == 1) {
-        let movableTile = emptyTile - 4;
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
+        let movableTile = emptyTile - 4; // index of tile that's above empty one
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's above empty 
 
         movableTileDiv.classList.add("movable-piece");
+
+        // add click event to this tile, which will swap it with the empty tile
         movableTileDiv.addEventListener("click", function () {
             swapTiles(movableTile, emptyTile, "transition-down");
         })
     }
 
-    // empty tile can swap with right
+    // if empty tile can move right
     if (validMoveDirs[emptyTile][1] == 1) {
-        let movableTile = shuffledTiles.indexOf("sixteen") + 1;
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
+        let movableTile = shuffledTiles.indexOf("sixteen") + 1; // store index of tile that's right of empty one
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's right of empty
 
         movableTileDiv.classList.add("movable-piece");
         movableTileDiv.addEventListener("click", function () {
@@ -127,10 +145,10 @@ function generatePuzzle() {
         })
     }
 
-    // empty tile can swap with bottom
+    // if empty tile can move down
     if (validMoveDirs[emptyTile][2] == 1) {
-        let movableTile = shuffledTiles.indexOf("sixteen") + 4;
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
+        let movableTile = shuffledTiles.indexOf("sixteen") + 4; // store index of tile that's below empty one
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's below empty
 
         movableTileDiv.classList.add("movable-piece");
         movableTileDiv.addEventListener("click", function () {
@@ -138,10 +156,10 @@ function generatePuzzle() {
         })
     }
 
-    // empty tile can swap with left
+    // if empty tile can move left
     if (validMoveDirs[emptyTile][3] == 1) {
-        let movableTile = emptyTile - 1;
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
+        let movableTile = emptyTile - 1; // index of tile that's left of empty one
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's left of  empty
 
         movableTileDiv.classList.add("movable-piece");
         movableTileDiv.addEventListener("click", function () {
@@ -150,6 +168,12 @@ function generatePuzzle() {
     }
 }
 
+/**
+ * Swaps two tiles, increments totalMoves, checks if puzzle is solved and updates puzzle area.
+ * @param {number} movableTile - The index of the non-empty tile that's going to be swapped.
+ * @param {number} emptyTile - The index of the empty.
+ * @param {string} transition - The classname of the transition.
+ */
 function swapTiles(movableTile, emptyTile, transition) {
     let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
     movableTileDiv.classList.add(transition);
@@ -159,12 +183,13 @@ function swapTiles(movableTile, emptyTile, transition) {
         shuffledTiles[emptyTile] = shuffledTiles[movableTile];
         shuffledTiles[movableTile] = temp;
 
-        generatePuzzle();
         updateMoves();
         checkSolved();
+        generatePuzzle();
     }, 900)
 }
 
+/** Changes the background image of puzzle tiles and displays them in the correct order. */
 function changeBg() {
     let bg = document.getElementById("background").value;
     let puzzleDiv = document.getElementById("puzzle")
@@ -182,19 +207,22 @@ function changeBg() {
     }
 }
 
+/** Increments seconds and updates the DOM. */
 function startTimer() {
     let secsHTML = document.getElementById("seconds");
-    secsHTML.innerHTML = "";
+    // secsHTML.innerHTML = ;
     seconds++;
     secsHTML.innerHTML = seconds;
 }
 
+/** Increments seconds and updates DOM. */
 function updateMoves() {
     totalMoves++
     let movesHTML = document.getElementById("moves");
     movesHTML.innerHTML = totalMoves;
 }
 
+/**  Checks if puzzle has been solved. If so, end game notification is displayed. */
 function checkSolved() {
     if (shuffledTiles.toString() == originalTiles.toString()) {
         clearInterval(Interval);
@@ -220,10 +248,12 @@ function checkSolved() {
     }
 }
 
+/** Pauses music, resets timer and totalMoves.  */
 function reset() {
     let music = document.getElementById("music");
     let moves = document.getElementById("moves");
     let secs = document.getElementById('seconds');
+
     music.pause();
     clearInterval(Interval);
     seconds = 0;

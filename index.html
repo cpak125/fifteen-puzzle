@@ -1,3 +1,11 @@
+<!-- 
+Extra Features Implemented:
+    1.) End-of-game notification
+    2.) Animations and/or transitions
+    3.) Game time with some music file
+    4.) Multiple backgrounds
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,8 +16,6 @@
     <title>Fifteen Puzzle</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
-<!-- <body onload="initPuzzle()"> -->
 
 <body onload="initPuzzle()">
 
@@ -28,7 +34,7 @@
 
         <div id="select">
             <label for="background">Select a background:</label>
-            <select name="background" id="background">
+            <select name="background" id="background" onchange="changeBg()">
                 <option value="kobe" id="kobe">Kobe</option>
                 <option value="lebron" id="lebron">Lebron</option>
                 <option value="steph" id="steph">Steph</option>
@@ -37,18 +43,15 @@
         </div>
 
         <div id="game-info">
-            <p>Seconds elapsed:<span id="seconds"></span> Total moves:<span id="moves">0</span></p>
+            <p>Seconds elapsed:<span id="seconds">0</span> Total moves:<span id="moves">0</span></p>
         </div>
 
         <div id="modal">
-
-            <!-- Modal content -->
             <div id="modal-content">
                 <span id="close">&times;</span>
                 <img src="images/congrats.gif" alt="congrats">
                 <p id="message"></p>
             </div>
-
         </div>
 
         <div id="puzzle">
@@ -89,8 +92,6 @@
         <a href="#"><img class="w3c" src="images/w3c-xhtml.png" alt="w3c-xhtml"></a>
         <a href="#"><img class="w3c" src="images/w3c-css.png" alt="w3c-css"></a>
     </p>
-
-
 
     <script src="fifteen.js"></script>
 </body>

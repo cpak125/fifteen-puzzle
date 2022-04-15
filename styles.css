@@ -100,7 +100,6 @@ body {
 
 #six {
     background-position: -100px -100px;
-    top: 100px;
 }
 
 #seven {
@@ -195,6 +194,15 @@ p {
 #moves {
     margin-left: 5px;
     color: #094074;
+}
+
+#seconds {
+    margin-right: 10px;
+}
+
+#game-info p {
+    padding: 1rem;
+    border: 2px dotted #EE6C4D;
 }
 
 #modal {
