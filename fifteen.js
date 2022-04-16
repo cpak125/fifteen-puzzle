@@ -14,7 +14,8 @@ let numericMap = {
     "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
 };
 
-/* valid directions a div/tile can move from each position/index: [ [up, right, down, left] ]
+/* directions a div/tile can move from each puzzle position: 
+[ [up, right, down, left] ]
 value of 1 indicates valid direction. */
 let validMoveDirs = [
     [0, 1, 1, 0], [0, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1],
@@ -23,13 +24,18 @@ let validMoveDirs = [
     [1, 1, 0, 0], [1, 1, 0, 1], [1, 1, 0, 1], [1, 0, 0, 1]
 ];
 
-let shuffledTiles = originalTiles.slice(); // copy of orginal tiles/divs to use for shuffling
-let totalMoves = 0; // to track current number of moves
-let Interval;// to track seconds elapsed
+// copy of orginal tiles/divs to use for shuffling/gameplay
+let shuffledTiles = originalTiles.slice();
+
+// to track current number of moves
+let totalMoves = 0;
+
+// to track time elapsed
+let Interval;
 let seconds = 0;
 
 /**
- * Displays random background image onto  puzzle pieces when page initially loads.
+ * Displays random background image onto puzzle pieces when page initially loads.
  */
 function initPuzzle() {
     let bgs = ["kobe", "lebron", "steph", "kd"]; // ids of background images
@@ -44,7 +50,7 @@ function initPuzzle() {
 
 /**
  * randomly rearrange the tiles of the puzzle by repeatedly choosing a random neighbor
- * of the empty tile and swapping it with the empty tile’s space, 1000 times.
+ * of the empty tile and swapping it with the empty tile, 1000 times.
  */
 function shuffle() {
     shuffledTiles = originalTiles.slice();
@@ -57,25 +63,31 @@ function shuffle() {
 
         // if empty tile can move left
         if (validMoveDirs[emptyTile][0] == 1) {
-            movableTile = emptyTile - 4; // index of tile that's above empty one
+            // index of tile that's above empty one
+            movableTile = emptyTile - 4;
+
             neighbors.push(movableTile);
         }
 
         // if empty tile can move left
         if (validMoveDirs[emptyTile][1] == 1) {
-            movableTile = emptyTile + 1; // index tile that's right of empty one
+            // index tile that's right of empty one
+            movableTile = emptyTile + 1;
+
             neighbors.push(movableTile);
         }
 
         // if empty tile can move left
         if (validMoveDirs[emptyTile][2] == 1) {
-            movableTile = emptyTile + 4; // index of tile that's below the empty one
+            // index of tile that's below the empty one
+            movableTile = emptyTile + 4;
             neighbors.push(movableTile);
         }
 
         // if empty tile can move left
         if (validMoveDirs[emptyTile][3] == 1) {
-            movableTile = emptyTile - 1; // index of tile that's left of empty one
+            // index of tile that's left of empty one
+            movableTile = emptyTile - 1;
             neighbors.push(movableTile);
         }
 
@@ -90,7 +102,7 @@ function shuffle() {
     }
 
     reset();
-    generatePuzzle();
+    updatePuzzle();
     music.play();
     Interval = setInterval(startTimer, 1000);
 }
@@ -100,7 +112,7 @@ function shuffle() {
  * and displays the tiles accordingly. Also distinguishes which
  * tiles can be swapped with empty tile.
  */
-function generatePuzzle() {
+function updatePuzzle() {
     let puzzleDiv = document.getElementById("puzzle");
     puzzleDiv.innerHTML = "";
     let bg = document.getElementById("background").value;
@@ -115,16 +127,18 @@ function generatePuzzle() {
 
         // else add tile with its id, background, and numeric value
         else {
-            puzzleDiv.innerHTML += `<div id='${ shuffledTiles[i] }' class='tile ${ bg }'>
-                                        ${ numericMap[shuffledTiles[i]] }
-                                    </div>`
+            puzzleDiv.innerHTML += `<div id='${ shuffledTiles[i] }' class='tile ${ bg }'> 
+                                    ${ numericMap[shuffledTiles[i]] }</div>`
         }
     }
 
     // if empty tile can move up
     if (validMoveDirs[emptyTile][0] == 1) {
-        let movableTile = emptyTile - 4; // index of tile that's above empty one
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's above empty 
+        // index of tile that's above empty one
+        let movableTile = emptyTile - 4;
+
+        // div element of tile that's above empty 
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
 
         movableTileDiv.classList.add("movable-piece");
 
@@ -136,8 +150,11 @@ function generatePuzzle() {
 
     // if empty tile can move right
     if (validMoveDirs[emptyTile][1] == 1) {
-        let movableTile = shuffledTiles.indexOf("sixteen") + 1; // store index of tile that's right of empty one
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's right of empty
+        // store index of tile that's right of empty one
+        let movableTile = shuffledTiles.indexOf("sixteen") + 1;
+
+        // div element of tile that's right of empty
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
 
         movableTileDiv.classList.add("movable-piece");
         movableTileDiv.addEventListener("click", function () {
@@ -147,8 +164,11 @@ function generatePuzzle() {
 
     // if empty tile can move down
     if (validMoveDirs[emptyTile][2] == 1) {
-        let movableTile = shuffledTiles.indexOf("sixteen") + 4; // store index of tile that's below empty one
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's below empty
+        // store index of tile that's below empty one
+        let movableTile = shuffledTiles.indexOf("sixteen") + 4;
+
+        // div element of tile that's below empty
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
 
         movableTileDiv.classList.add("movable-piece");
         movableTileDiv.addEventListener("click", function () {
@@ -158,8 +178,11 @@ function generatePuzzle() {
 
     // if empty tile can move left
     if (validMoveDirs[emptyTile][3] == 1) {
-        let movableTile = emptyTile - 1; // index of tile that's left of empty one
-        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]); // div element of tile that's left of  empty
+        // index of tile that's left of empty one
+        let movableTile = emptyTile - 1;
+
+        // div element of tile that's left of  empty
+        let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
 
         movableTileDiv.classList.add("movable-piece");
         movableTileDiv.addEventListener("click", function () {
@@ -169,7 +192,7 @@ function generatePuzzle() {
 }
 
 /**
- * Swaps two tiles, increments totalMoves, checks if puzzle is solved and updates puzzle area.
+ * Swaps two tiles with transition effect, increments totalMoves, checks if puzzle is solved and updates puzzle area.
  * @param {number} movableTile - The index of the non-empty tile that's going to be swapped.
  * @param {number} emptyTile - The index of the empty.
  * @param {string} transition - The classname of the transition.
@@ -185,7 +208,7 @@ function swapTiles(movableTile, emptyTile, transition) {
 
         updateMoves();
         checkSolved();
-        generatePuzzle();
+        updatePuzzle();
     }, 900)
 }
 
@@ -210,12 +233,11 @@ function changeBg() {
 /** Increments seconds and updates the DOM. */
 function startTimer() {
     let secsHTML = document.getElementById("seconds");
-    // secsHTML.innerHTML = ;
     seconds++;
     secsHTML.innerHTML = seconds;
 }
 
-/** Increments seconds and updates DOM. */
+/** Increments totalMoves and updates DOM. */
 function updateMoves() {
     totalMoves++
     let movesHTML = document.getElementById("moves");
@@ -232,7 +254,8 @@ function checkSolved() {
         let audio = document.getElementById("music");
 
         audio.pause();
-        message.innerHTML = `You solved the puzzle in ${ endTime } seconds with ${ totalMoves } moves.`
+        message.innerHTML = `You solved the puzzle in ${ endTime } 
+                            seconds with ${ totalMoves } moves.`
         modal.style.display = "block";
 
         close.onclick = function () {
@@ -257,6 +280,7 @@ function reset() {
     music.pause();
     clearInterval(Interval);
     seconds = 0;
+    totalMoves = 0;
     secs.innerHTML = 0;
     moves.innerHTML = 0;
 }
