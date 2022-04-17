@@ -38,7 +38,7 @@ let seconds = 0;
  * Displays random background image onto puzzle pieces when page initially loads.
  */
 function initPuzzle() {
-    let bgs = ["kobe", "lebron", "steph", "kd"]; // ids of background images
+    let bgs = ["kobe", "lebron", "steph", "kd"]; // class name of background images
 
     let randBg = bgs[Math.floor(Math.random() * bgs.length)];
     document.getElementById(randBg).selected = true;
