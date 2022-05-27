@@ -13,7 +13,7 @@ I recreated this classic game, which was originally invented by Noyes Palmer Cha
 - JavaScript
 
 ## Getting Started
-[Deployed App]()
+[Deployed App](https://cpak125.github.io/fifteen-puzzle/)
 
 **Tips for solving a fifteen puzzle**: First get the entire top/left sides into proper position. That is, put squares number 1, 2, 3, 4, 5, 9, and 13 into their proper places. Now never touch those squares again. Now what’s left to be solved is a 3x3 board, which is much easier.
 
