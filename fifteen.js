@@ -44,7 +44,7 @@ function initPuzzle() {
     document.getElementById(randBg).selected = true;
 
     for (let i = 0; i < originalTiles.length - 1; i++) {
-        document.getElementById(originalTiles[i]).classList.add(`${ randBg }`);
+        document.getElementById(originalTiles[i]).classList.add(`${randBg}`);
     }
 }
 
@@ -122,13 +122,13 @@ function updatePuzzle() {
 
         // if current tile is the empty one add tile with empty properties
         if (shuffledTiles[i] == "sixteen") {
-            puzzleDiv.innerHTML += "<div id='sixteen' class='tile'></div>"
+            puzzleDiv.innerHTML += "<div id='sixteen' class='tile'></div>";
         }
 
         // else add tile with its id, background, and numeric value
         else {
-            puzzleDiv.innerHTML += `<div id='${ shuffledTiles[i] }' class='tile ${ bg }'> 
-                                    ${ numericMap[shuffledTiles[i]] }</div>`
+            puzzleDiv.innerHTML += `<div id='${shuffledTiles[i]}' class='tile ${bg}'> 
+                                    ${numericMap[shuffledTiles[i]]}</div>`;
         }
     }
 
@@ -143,9 +143,9 @@ function updatePuzzle() {
         movableTileDiv.classList.add("movable-piece");
 
         // add click event to this tile, which will swap it with the empty tile
-        movableTileDiv.addEventListener("click", function () {
+        movableTileDiv.addEventListener("click", function() {
             swapTiles(movableTile, emptyTile, "transition-down");
-        })
+        });
     }
 
     // if empty tile can move right
@@ -157,9 +157,9 @@ function updatePuzzle() {
         let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
 
         movableTileDiv.classList.add("movable-piece");
-        movableTileDiv.addEventListener("click", function () {
+        movableTileDiv.addEventListener("click", function() {
             swapTiles(movableTile, emptyTile, "transition-left");
-        })
+        });
     }
 
     // if empty tile can move down
@@ -171,9 +171,9 @@ function updatePuzzle() {
         let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
 
         movableTileDiv.classList.add("movable-piece");
-        movableTileDiv.addEventListener("click", function () {
+        movableTileDiv.addEventListener("click", function() {
             swapTiles(movableTile, emptyTile, "transition-up");
-        })
+        });
     }
 
     // if empty tile can move left
@@ -185,9 +185,9 @@ function updatePuzzle() {
         let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
 
         movableTileDiv.classList.add("movable-piece");
-        movableTileDiv.addEventListener("click", function () {
+        movableTileDiv.addEventListener("click", function() {
             swapTiles(movableTile, emptyTile, "transition-right");
-        })
+        });
     }
 }
 
@@ -201,7 +201,7 @@ function swapTiles(movableTile, emptyTile, transition) {
     let movableTileDiv = document.getElementById(shuffledTiles[movableTile]);
     movableTileDiv.classList.add(transition);
 
-    setTimeout(function () {
+    setTimeout(function() {
         let temp = shuffledTiles[emptyTile];
         shuffledTiles[emptyTile] = shuffledTiles[movableTile];
         shuffledTiles[movableTile] = temp;
@@ -209,23 +209,23 @@ function swapTiles(movableTile, emptyTile, transition) {
         updateMoves();
         checkSolved();
         updatePuzzle();
-    }, 900)
+    }, 900);
 }
 
 /** Changes the background image of puzzle tiles and displays them in the correct order. */
 function changeBg() {
     let bg = document.getElementById("background").value;
-    let puzzleDiv = document.getElementById("puzzle")
+    let puzzleDiv = document.getElementById("puzzle");
     puzzleDiv.innerHTML = "";
     reset();
 
     for (let i = 0; i < originalTiles.length; i++) {
         if (originalTiles[i] == "sixteen") {
-            puzzleDiv.innerHTML += "<div id='sixteen' class='tile'></div>"
+            puzzleDiv.innerHTML += "<div id='sixteen' class='tile'></div>";
         } else {
-            puzzleDiv.innerHTML += `<div id='${ originalTiles[i] }' class='tile ${ bg }'>
-                                        ${ numericMap[shuffledTiles[i]] }
-                                    </div>`
+            puzzleDiv.innerHTML += `<div id='${originalTiles[i]}' class='tile ${bg}'>
+                                        ${numericMap[shuffledTiles[i]]}
+                                    </div>`;
         }
     }
 }
@@ -239,7 +239,7 @@ function startTimer() {
 
 /** Increments totalMoves and updates DOM. */
 function updateMoves() {
-    totalMoves++
+    totalMoves++;
     let movesHTML = document.getElementById("moves");
     movesHTML.innerHTML = totalMoves;
 }
@@ -254,19 +254,19 @@ function checkSolved() {
         let audio = document.getElementById("music");
 
         audio.pause();
-        message.innerHTML = `You solved the puzzle in ${ endTime } 
-                            seconds with ${ totalMoves } moves.`
+        message.innerHTML = `You solved the puzzle in ${endTime} 
+                            seconds with ${totalMoves} moves.`;
         modal.style.display = "block";
 
-        close.onclick = function () {
+        close.onclick = function() {
             modal.style.display = "none";
-        }
+        };
 
-        window.onclick = function (event) {
+        window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
-        }
+        };
         reset();
     }
 }
