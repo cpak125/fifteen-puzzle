@@ -1,5 +1,5 @@
 # 15 Puzzle
-## Project Description
+
 The Fifteen Puzzle (more generally called the Sliding Puzzle) is a simple classic game consisting of a 4x4 grid of numbered squares with one square missing. The object of the game is to rearrange the tiles into numerical order by repeatedly sliding a square that neighbors the missing square into the empty space.
 
 I recreated this classic game, which was originally invented by Noyes Palmer Chapman. Each tile displays a part of a background image. I implemented a shuffling algorithm that generates a random, valid solvable puzzle state by repeatedly choosing a random neighbor of the missing tile and sliding it onto the missing tile’s space. Roughly 1000 such random movements were made to produce a well-shuffled board. There are mulitple backgrounds to choose from. Total moves and time it takes to solve are recorded.
